@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: bitcoin-server
+    env: node
+    buildCommand: npm install
+    startCommand: node bitcoin-server.js
+    envVars:
+      - key: COINBASE_API_KEY
+        value: f431e433-6d11-4d47-b9f1-49c72608dd83
+      - key: COINBASE_API_SECRET
+        value: o9kS3BWPR8Lt2xivels3NlYnsY+HtGup1yrOr8e+EJAbBdE5Bb4OBCBAxRn50FebYH6zfDqr1nl6HIY6vg3WIw==
+      - key: BITCOIN_WALLET
+        value: bc1qadtc9kprdjc3fyetlml0vrprtlmp56tf0yjr4u

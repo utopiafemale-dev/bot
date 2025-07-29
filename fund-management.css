@@ -1,0 +1,132 @@
+/* Fund Management Dashboard Styles */
+.owner-fund-dashboard {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.fund-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.fund-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.fund-stat .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+.fund-stat .stat-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.fund-stat .earnings-real {
+    color: #00ff88 !important;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.fund-controls {
+    text-align: center;
+}
+
+.fund-controls .payout-button {
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+    transition: all 0.3s ease;
+}
+
+.fund-controls .payout-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+}
+
+.transfer-info {
+    margin-top: 1rem;
+    opacity: 0.8;
+}
+
+.transfer-info small {
+    font-size: 0.8rem;
+    color: #e0e0e0;
+}
+
+/* Real-time balance animation */
+@keyframes balanceUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.earnings-real.updated {
+    animation: balanceUpdate 0.5s ease;
+}
+
+/* Transfer notification */
+.transfer-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    color: white;
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+    z-index: 10001;
+    animation: transferPulse 2s ease;
+}
+
+@keyframes transferPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* PayPal integration status */
+.paypal-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.paypal-status.connected {
+    border-left: 4px solid #00ff88;
+}
+
+.paypal-status.disconnected {
+    border-left: 4px solid #ff4444;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff88;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

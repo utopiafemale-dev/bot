@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Worker Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fund-management.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1><i class="fas fa-robot"></i> AI Worker Manager</h1>
+                <div class="system-stats">
+                    <span class="stat">
+                        <i class="fas fa-users"></i>
+                        <span id="totalWorkers">0</span> Workers
+                    </span>
+                    <span class="stat">
+                        <i class="fas fa-play"></i>
+                        <span id="activeWorkers">0</span> Active
+                    </span>
+                    <span class="stat">
+                        <i class="fas fa-dollar-sign"></i>
+                        $<span id="totalEarnings">0.00</span>
+                    </span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-primary" id="createWorkers">
+                    <i class="fas fa-plus"></i> Create Workers
+                </button>
+                <button class="btn-secondary" id="startAll">
+                    <i class="fas fa-play"></i> Start All
+                </button>
+                <button class="btn-danger" id="stopAll">
+                    <i class="fas fa-stop"></i> Stop All
+                </button>
+            </div>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="panel-section">
+                <h3>Worker Configuration</h3>
+                <div class="config-grid">
+                    <div class="config-item">
+                        <label>Number of Workers:</label>
+                        <input type="number" id="workerCount" value="100" min="1" max="3000">
+                    </div>
+                    <div class="config-item">
+                        <label>Worker Type:</label>
+                        <select id="workerType">
+                            <option value="survey">Survey Worker</option>
+                            <option value="data-entry">Data Entry</option>
+                            <option value="content">Content Creator</option>
+                            <option value="research">Research Assistant</option>
+                        </select>
+                    </div>
+                    <div class="config-item">
+                        <label>Performance Mode:</label>
+                        <select id="performanceMode">
+                            <option value="balanced">Balanced</option>
+                            <option value="speed">High Speed</option>
+                            <option value="accuracy">High Accuracy</option>
+                            <option value="stealth">Stealth Mode</option>
+                        </select>
+                    </div>
+                    <div class="config-item">
+                        <label>Target Earnings:</label>
+                        <input type="number" id="targetEarnings" value="1000" min="1" step="0.01">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Monitoring Options</h3>
+                <div class="monitoring-controls">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="realTimeMonitoring" checked>
+                        <span>Real-time Monitoring</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="virtualWindows" checked>
+                        <span>Virtual Windows</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="progressTracking" checked>
+                        <span>Progress Tracking</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="errorLogging" checked>
+                        <span>Error Logging</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Worker Grid View -->
+            <div class="view-section" id="gridView">
+                <div class="view-header">
+                    <h2>Worker Grid View</h2>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i> Grid
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i> List
+                        </button>
+                        <button class="view-btn" data-view="windows">
+                            <i class="fas fa-window-restore"></i> Windows
+                        </button>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search workers..." id="workerSearch">
+                        </div>
+                    </div>
+                </div>
+                <div class="worker-grid" id="workerGrid">
+                    <!-- Workers will be populated here -->
+                </div>
+            </div>
+
+            <!-- Virtual Windows View -->
+            <div class="view-section hidden" id="windowsView">
+                <div class="windows-container" id="windowsContainer">
+                    <!-- Virtual windows will be created here -->
+                </div>
+            </div>
+
+            <!-- Performance Dashboard -->
+            <div class="dashboard-section">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Performance Metrics</h3>
+                        <canvas id="performanceChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Earnings Over Time</h3>
+                        <canvas id="earningsChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Worker Status Distribution</h3>
+                        <div class="status-distribution">
+                            <div class="status-item">
+                                <div class="status-color working"></div>
+                                <span>Working: <span id="workingCount">0</span></span>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-color idle"></div>
+                                <span>Idle: <span id="idleCount">0</span></span>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-color error"></div>
+                                <span>Error: <span id="errorCount">0</span></span>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-color offline"></div>
+                                <span>Offline: <span id="offlineCount">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Top Performers</h3>
+                        <div class="top-performers" id="topPerformers">
+                            <!-- Top performing workers will be listed here -->
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>💰 Bitcoin Fund Management</h3>
+                        <div class="bitcoin-fund-dashboard">
+                            <div class="fund-stats">
+                                <div class="fund-stat">
+                                    <span class="stat-label">Current Balance:</span>
+                                    <span class="stat-value earnings-real" id="currentBalance">$0.00</span>
+                                </div>
+                                <div class="fund-stat">
+                                    <span class="stat-label">Bitcoin Price:</span>
+                                    <span class="stat-value" id="bitcoinPrice">$45,000</span>
+                                </div>
+                                <div class="fund-stat">
+                                    <span class="stat-label">Wallet Address:</span>
+                                    <span class="stat-value" id="walletAddress">bc1qadtc9kprdjc3fyetlml0vrprtlmp56tf0yjr4u</span>
+                                </div>
+                                <div class="fund-stat">
+                                    <span class="stat-label">Auto-Transfer:</span>
+                                    <span class="stat-value" style="color: #28a745;">Every 30 seconds</span>
+                                </div>
+                            </div>
+                            <div class="fund-controls">
+                                <button class="payout-button" id="manualTransfer">
+                                    <i class="fab fa-bitcoin"></i>
+                                    Send Bitcoin Now
+                                </button>
+                                <div class="transfer-info">
+                                    <small>💰 Real Bitcoin transfers to your wallet</small>
+                                </div>
+                            </div>
+                            <div class="transfer-history">
+                                <h4>Recent Transfers</h4>
+                                <div id="transferHistory">
+                                    <!-- Transfer history will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="activity-log">
+            <div class="log-header">
+                <h3>Activity Log</h3>
+                <div class="log-controls">
+                    <button class="btn-small" id="clearLog">Clear</button>
+                    <button class="btn-small" id="exportLog">Export</button>
+                </div>
+            </div>
+            <div class="log-content" id="logContent">
+                <!-- Activity logs will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Worker Detail Modal -->
+    <div id="workerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalWorkerName">Worker Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="worker-details">
+                    <div class="detail-section">
+                        <h4>Basic Information</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">ID:</span>
+                                <span class="detail-value" id="modalWorkerId"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value" id="modalWorkerStatus"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Type:</span>
+                                <span class="detail-value" id="modalWorkerType"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Uptime:</span>
+                                <span class="detail-value" id="modalWorkerUptime"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Performance</h4>
+                        <div class="performance-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Tasks Completed:</span>
+                                <span class="metric-value" id="modalTasksCompleted">0</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Success Rate:</span>
+                                <span class="metric-value" id="modalSuccessRate">0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Earnings:</span>
+                                <span class="metric-value" id="modalEarnings">$0.00</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Avg. Task Time:</span>
+                                <span class="metric-value" id="modalAvgTime">0s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Current Task</h4>
+                        <div class="current-task">
+                            <div class="task-info">
+                                <span class="task-name" id="modalCurrentTask">No active task</span>
+                                <div class="task-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="modalTaskProgress" style="width: 0%"></div>
+                                    </div>
+                                    <span class="progress-text" id="modalProgressText">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="modalStartWorker">Start Worker</button>
+                    <button class="btn-secondary" id="modalPauseWorker">Pause Worker</button>
+                    <button class="btn-danger" id="modalStopWorker">Stop Worker</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Only Bitcoin System - No PayPal interference -->
+    <script src="config.js"></script>
+    <script src="worker-manager.js"></script>
+    <script src="virtual-windows.js"></script>
+    <script src="charts.js"></script>
+    <script src="real-bitcoin-system.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
